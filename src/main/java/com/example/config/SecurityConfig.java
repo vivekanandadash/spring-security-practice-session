@@ -1,10 +1,24 @@
 package com.example.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 public class SecurityConfig {
-  public SecurityFilterChain filterChain(HttpSecurity security){
-      return null;
+
+    @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http){
+      http.csrf(csrf->csrf.disable())
+              .authorizeHttpRequests(req->{
+                  req.requestMatchers("/api/v1/employee/signup").permitAll()
+                          .anyRequest().authenticated();
+              });
+      return http.build();
+  }
+  @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
   }
 }
