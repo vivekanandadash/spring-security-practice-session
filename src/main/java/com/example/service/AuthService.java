@@ -2,7 +2,7 @@ package com.example.service;
 
 import com.example.dto.APIResponse;
 import com.example.dto.UserDto;
-import com.example.entity.User;
+import com.example.entity.UserEntity;
 import com.example.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,14 +30,14 @@ public class AuthService {
             response.setStatus(409);
             response.setData("email already exists");
        }
-       User user = new User();
-       BeanUtils.copyProperties(userDto,user);
-       user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-       userRepository.save(user);
+       UserEntity userEntity = new UserEntity();
+       BeanUtils.copyProperties(userDto, userEntity);
+       userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+       userRepository.save(userEntity);
 
        response.setMessage("Registration Success");
        response.setStatus(200);
-       response.setData("User Registration Done");
+       response.setData("UserEntity Registration Done");
 
        return response;
 
