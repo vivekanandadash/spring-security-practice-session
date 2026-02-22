@@ -6,7 +6,9 @@ import com.example.entity.User;
 import com.example.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthService {
    private UserRepository  userRepository;
    private PasswordEncoder passwordEncoder;
@@ -15,19 +17,15 @@ public class AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-    public AuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
    public APIResponse<String> register(UserDto userDto){
-        if(userRepository.existsByUserName(userDto.getUsername())){
-            APIResponse response = new APIResponse();
+       APIResponse<String> response = new APIResponse<>();
+        if(userRepository.existsByUsername(userDto.getUsername())){
+
             response.setMessage("Registration Failed");
             response.setStatus(409);
             response.setData("UserName already exists");
         }
         if (userRepository.existsByEmail(userDto.getEmail())){
-            APIResponse response = new APIResponse();
             response.setMessage("Registration Failed");
             response.setStatus(409);
             response.setData("email already exists");
@@ -37,7 +35,11 @@ public class AuthService {
        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
        userRepository.save(user);
 
-       return null;
+       response.setMessage("Registration Success");
+       response.setStatus(200);
+       response.setData("User Registration Done");
+
+       return response;
 
    }
 
