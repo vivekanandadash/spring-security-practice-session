@@ -20,7 +20,7 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http){
       http.csrf(csrf->csrf.disable())
               .authorizeHttpRequests(req->{
-                  req.requestMatchers("/api/v1/employee/signup","/api/v1/employee/login").permitAll()
+                  req.requestMatchers("/api/v1/employee/patient_signup","/api/v1/employee/doctor_signup","/api/v1/employee/login").permitAll()
                           .anyRequest().authenticated();
               });
       return http.build();
