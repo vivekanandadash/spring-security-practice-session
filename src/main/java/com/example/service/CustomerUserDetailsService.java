@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.entity.UserEntity;
 import com.example.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +24,6 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
         UserEntity userEntity = userRepository.findByUsername(username);
 
-        return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
+        return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.singleton(new SimpleGrantedAuthority(userEntity.getRole())));
     }
 }
